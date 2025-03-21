@@ -6,7 +6,7 @@ ipfs_kit_py==0.0.18
 ipfs_model_manager_py==0.0.23
 libp2p_kit_py==0.0.19
 ipfs_transformers_py
-transformers==4.46
+transformers==4.48.0
 numpy
 torchtext
 urllib3
@@ -24,7 +24,7 @@ timm
 Pillow
 nncf>=2.14.0
 onnxruntime==1.19.2
-onnx==1.16.1
+onnx==1.16.2
 multiformats
 pydub
 openai
