@@ -5,6 +5,7 @@ import json
 import hashlib
 import platform
 import tempfile
+from security import safe_command
 
 class install_depends_py():
     def __init__(self, resources, metadata):
@@ -232,7 +233,7 @@ class install_depends_py():
         install_results = {}
         try:
             install_cmd = [sys.executable , "-m", "pip", "install", "torchvision", "--break-system-packages"]
-            result = subprocess.run(install_cmd, check=True, capture_output=True, text=True)
+            result = safe_command.run(subprocess.run, install_cmd, check=True, capture_output=True, text=True)
             install_results["torch_vision"] = result.stdout
         except subprocess.CalledProcessError as e:
             install_results["torch_vision"] = e.stderr
@@ -243,7 +244,7 @@ class install_depends_py():
         install_results = {}
         try:
             install_cmd = [sys.executable , "-m", "pip", "install", "torch", "--break-system-packages"]
-            result = subprocess.run(install_cmd, check=True, capture_output=True, text=True)
+            result = safe_command.run(subprocess.run, install_cmd, check=True, capture_output=True, text=True)
             install_results["torch"] = result.stdout
         except subprocess.CalledProcessError as e:
             install_results["torch"] = e.stderr
@@ -457,7 +458,7 @@ class install_depends_py():
         install_results = {}
         try:
             install_cmd = [sys.executable , "-m", "pip", "install", "onnx", "--break-system-packages"]
-            result = subprocess.run(install_cmd, check=True, capture_output=True, text=True)
+            result = safe_command.run(subprocess.run, install_cmd, check=True, capture_output=True, text=True)
             install_results["onnx"] = result.stdout
         except subprocess.CalledProcessError as e:
             install_results["onnx"] = e.stderr
@@ -469,7 +470,7 @@ class install_depends_py():
         try:
             install_cmd = [sys.executable , "-m", "pip", "install", "torch", "torchvision", "torchaudio", "torchtext", "--index-url", " https://download.pytorch.org/whl/cpu", "--break-system-packages"]
             print(install_cmd)
-            install_results["cuda"] = subprocess.run(install_cmd, check=True)
+            install_results["cuda"] = safe_command.run(subprocess.run, install_cmd, check=True)
         except Exception as e:
             install_results["cuda"] = e
             print(e)
@@ -491,7 +492,7 @@ class install_depends_py():
         install_results = {}
         try:
             install_cmd = [sys.executable , "-m", "pip", "install", "faiss", "--break-system-packages"]
-            result = subprocess.run(install_cmd, check=True, capture_output=True, text=True)
+            result = safe_command.run(subprocess.run, install_cmd, check=True, capture_output=True, text=True)
             install_results["faiss"] = result.stdout
         except subprocess.CalledProcessError as e:
             install_results["faiss"] = e.stderr
@@ -502,7 +503,7 @@ class install_depends_py():
         install_results = {}
         try:
             install_cmd = [sys.executable , "-m", "pip", "install", "faiss-cuda", "--break-system-packages"]
-            result = subprocess.run(install_cmd, check=True, capture_output=True, text=True)
+            result = safe_command.run(subprocess.run, install_cmd, check=True, capture_output=True, text=True)
             install_results["faiss_cuda"] = result.stdout
         except subprocess.CalledProcessError as e:
             install_results["faiss_cuda"] = e.stderr
@@ -620,7 +621,7 @@ class install_depends_py():
         try:
             install_torch_cmd = [sys.executable , "-m", "pip", "install", "torch", "torchvision", "torchaudio", "torchtext", "--index-url", " https://download.pytorch.org/whl/cpu", "--break-system-packages"]
             print(install_torch_cmd)
-            install_results["torch"] = subprocess.run(install_torch_cmd, check=True)
+            install_results["torch"] = safe_command.run(subprocess.run, install_torch_cmd, check=True)
         except Exception as e:
             install_results["torch"] = e
             print(e)
@@ -630,7 +631,7 @@ class install_depends_py():
             install_results["torch"] = gpus
         except Exception as e:
             install_torch_cmd = [sys.executable , "-m", "pip", "install", "torch", "torchvision, torchaudio, torchtext", "--index-url", "https://download.pytorch.org/whl/cu102", "--break-system-packages"]
-            result = subprocess.run(install_torch_cmd, check=True, capture_output=True, text=True)
+            result = safe_command.run(subprocess.run, install_torch_cmd, check=True, capture_output=True, text=True)
             install_results["torch"] = result.stdout
         except subprocess.CalledProcessError as e:
             install_results["torch"] = e.stderr
@@ -641,7 +642,7 @@ class install_depends_py():
         install_results = {}
         try:
             install_cmd = [sys.executable , "-m", "pip", "install", "openvino", "--break-system-packages"]
-            result = subprocess.run(install_cmd, check=True, capture_output=True, text=True)
+            result = safe_command.run(subprocess.run, install_cmd, check=True, capture_output=True, text=True)
             install_results["openvino"] = result.stdout
         except subprocess.CalledProcessError as e:
             install_results["openvino"] = e.stderr
@@ -654,7 +655,7 @@ class install_depends_py():
         for dependency in dependencies:
             try:
                 install_cmd = [sys.executable , "-m", "pip", "install", dependency]
-                result = subprocess.run(install_cmd, check=True, capture_output=True, text=True)
+                result = safe_command.run(subprocess.run, install_cmd, check=True, capture_output=True, text=True)
                 install_results[dependency] = result.stdout
             except subprocess.CalledProcessError as e:
                 install_results[dependency] = e.stderr
@@ -665,7 +666,7 @@ class install_depends_py():
         install_results = {}
         install_ipex_cmd = [sys.executable , "-m", "pip", "install", "intel-extension-for-pytorch", "--extra-index-url", "https://pytorch-extension.intel.com/release-whl/stable/cpu/us/", "--break-system-packages"]
         try:
-            install_results["install_ipex"] = subprocess.run(install_ipex_cmd, check=True)
+            install_results["install_ipex"] = safe_command.run(subprocess.run, install_ipex_cmd, check=True)
         except Exception as e:
             install_results["install_ipex"] = e
             print(e)
@@ -688,7 +689,7 @@ class install_depends_py():
         install_optimum_cmd = [sys.executable, "-m" "pip", "install", "optimum"]
         test_results = {}        
         try:
-            install_results["install_huggingface_optimum"] = subprocess.run(install_optimum_cmd, check=True)
+            install_results["install_huggingface_optimum"] = safe_command.run(subprocess.run, install_optimum_cmd, check=True)
         except Exception as e:
             install_results["install_huggingface_optimum"] = e
             print(e)
@@ -730,7 +731,7 @@ class install_depends_py():
         install_results = {}
         try:
             install_cmd = [sys.executable , "-m", "pip", "install", "--upgrade", "--upgrade-strategy", "eager", "optimum[neural-compressor]", "--break-system-packages"]
-            result = subprocess.run(install_cmd, check=True, capture_output=True, text=True)
+            result = safe_command.run(subprocess.run, install_cmd, check=True, capture_output=True, text=True)
             install_results["install_optimum_neural_compressor"] = result.stdout
         except subprocess.CalledProcessError as e:
             install_results["install_optimum_neural_compressor"] = e.stderr
@@ -741,7 +742,7 @@ class install_depends_py():
         install_results = {}
         try:
             install_cmd = [sys.executable , "-m", "pip", "install", "--upgrade", "--upgrade-strategy", "eager", "optimum[cuda]", "--break-system-packages"]
-            result = subprocess.run(install_cmd, check=True, capture_output=True, text=True)
+            result = safe_command.run(subprocess.run, install_cmd, check=True, capture_output=True, text=True)
             install_results["install_optimum_cuda"] = result.stdout
         except subprocess.CalledProcessError as e:
             install_results["install_optimum_cuda"] = e.stderr
@@ -752,7 +753,7 @@ class install_depends_py():
         install_results = {}
         try:
             install_cmd = [sys.executable , "-m", "pip", "install", "--upgrade", "--upgrade-strategy", "eager", "optimum[openvino]", "--break-system-packages"]
-            result = subprocess.run(install_cmd, check=True, capture_output=True, text=True)
+            result = safe_command.run(subprocess.run, install_cmd, check=True, capture_output=True, text=True)
             install_results["install_optimum_openvino"] = result.stdout
         except subprocess.CalledProcessError as e:
             install_results["install_optimum_openvino"] = e.stderr
@@ -774,7 +775,7 @@ class install_depends_py():
         install_results = {}
         try:
             install_cmd = [sys.executable , "-m", "pip", "install", "--upgrade", "--upgrade-strategy", "eager", "optimum[ipex]", "--break-system-packages"]
-            result = subprocess.run(install_cmd, check=True, capture_output=True, text=True)    
+            result = safe_command.run(subprocess.run, install_cmd, check=True, capture_output=True, text=True)    
             install_results["install_optimum_ipex"] = result.stdout
         except subprocess.CalledProcessError as e:
             install_results["install_optimum_ipex"] = e.stderr
@@ -796,7 +797,7 @@ class install_depends_py():
         install_results = {}
         try:
             install_cmd = [sys.executable , "-m", "pip", "install", "--upgrade", "--upgrade-strategy", "eager", "optimum[habana]"]
-            result = subprocess.run(install_cmd, check=True, capture_output=True, text=True)
+            result = safe_command.run(subprocess.run, install_cmd, check=True, capture_output=True, text=True)
             install_results["install_optimum_habana"] = result.stdout
         except subprocess.CalledProcessError as e:
             install_results["install_optimum_habana"] = e.stderr
@@ -807,7 +808,7 @@ class install_depends_py():
         install_results = {}
         try:
             install_cmd = [sys.executable , "-m", "pip","install","--upgrade","--upgrade-strategy","eager","optimum[onnx]","--break-system-packages"]
-            result = subprocess.run(install_cmd, check=True, capture_output=True, text=True)
+            result = safe_command.run(subprocess.run, install_cmd, check=True, capture_output=True, text=True)
             install_results["install_optimum_onnx"] = result.stdout
         except subprocess.CalledProcessError as e:
             install_results["install_optimum_onnx"] = e.stderr
@@ -872,7 +873,7 @@ class install_depends_py():
         install_results = {} 
         try:
             install_cmd = [sys.executable , "-m", "pip", "install", "oneccl_bind_pt", "--extra-index-url", "https://pytorch-extension.intel.com/release-whl/stable/cpu/us/", "--break-system-packages"]
-            result = subprocess.run(install_cmd, check=True, capture_output=True, text=True)
+            result = safe_command.run(subprocess.run, install_cmd, check=True, capture_output=True, text=True)
             install_results["oneccl_bind_pt"] = result.stdout
         except subprocess.CalledProcessError as e:
             install_results["oneccl_bind_pt"] = e.stderr
@@ -889,7 +890,7 @@ class install_depends_py():
         install_results = {}
         install_cuda_cmd = ["apt-get", "install", "nvidia-cuda-toolkit", "--break-system-packages"]
         try:
-            install_results["install_cuda"] = subprocess.run(install_cuda_cmd, check=True)
+            install_results["install_cuda"] = safe_command.run(subprocess.run, install_cuda_cmd, check=True)
         except Exception as e:
             install_results["install_cuda"] = e
             print(e)
@@ -909,7 +910,7 @@ class install_depends_py():
         install_results = {}
         try:
             install_cmd = [sys.executable , "-m", "pip", "install", "faiss", "--break-system-packages"]
-            result = subprocess.run(install_cmd, check=True, capture_output=True, text=True)
+            result = safe_command.run(subprocess.run, install_cmd, check=True, capture_output=True, text=True)
             install_results["faiss"] = result.stdout
         except subprocess.CalledProcessError as e:
             install_results["faiss"] = e.stderr
@@ -920,7 +921,7 @@ class install_depends_py():
         install_results = {}
         try:
             install_cmd = [sys.executable , "-m", "pip", "install", "faiss-cuda", "--break-system-packages"]
-            result = subprocess.run(install_cmd, check=True, capture_output=True, text=True)
+            result = safe_command.run(subprocess.run, install_cmd, check=True, capture_output=True, text=True)
             install_results["faiss_cuda"] = result.stdout
         except subprocess.CalledProcessError as e:
             install_results["faiss_cuda"] = e.stderr
@@ -932,7 +933,7 @@ class install_depends_py():
         git_src="https://github.com/guangzegu/faiss/tree/main"
         try:
             install_cmd = [sys.executable , "-m", "pip", "install", "faiss-amx", "--break-system-packages"]
-            result = subprocess.run(install_cmd, check=True, capture_output=True, text=True)
+            result = safe_command.run(subprocess.run, install_cmd, check=True, capture_output=True, text=True)
             install_results["faiss_amx"] = result.stdout
         except subprocess.CalledProcessError as e:
             install_results["faiss_amx"] = e.stderr
@@ -943,7 +944,7 @@ class install_depends_py():
         install_results = {}
         try:
             install_cmd = [sys.executable , "-m", "pip", "install", "qdrant", "--break-system-packages"]
-            result = subprocess.run(install_cmd, check=True, capture_output=True, text=True)
+            result = safe_command.run(subprocess.run, install_cmd, check=True, capture_output=True, text=True)
             install_results["qdrant"] = result.stdout
         except subprocess.CalledProcessError as e:
             install_results["qdrant"] = e.stderr
@@ -954,7 +955,7 @@ class install_depends_py():
         install_results = {}
         try:
             install_cmd = [sys.executable , "-m", "pip", "install", "elasticsearch", "--break-system-packages"]
-            result = subprocess.run(install_cmd, check=True, capture_output=True, text=True)
+            result = safe_command.run(subprocess.run, install_cmd, check=True, capture_output=True, text=True)
             install_results["elasticsearch"] = result.stdout
         except subprocess.CalledProcessError as e:
             install_results["elasticsearch"] = e.stderr
@@ -965,7 +966,7 @@ class install_depends_py():
         install_results = {}
         try:
             install_cmd = [sys.executable , "-m", "pip", "install", "numpy", "--break-system-packages"]
-            result = subprocess.run(install_cmd, check=True, capture_output=True, text=True)
+            result = safe_command.run(subprocess.run, install_cmd, check=True, capture_output=True, text=True)
             install_results["numpy"] = result.stdout
         except subprocess.CalledProcessError as e:
             install_results["numpy"] = e.stderr
@@ -976,7 +977,7 @@ class install_depends_py():
         install_results = {}
         try:
             install_cmd = [sys.executable , "-m", "pip", "install", "onnx", "--break-system-packages"]
-            result = subprocess.run(install_cmd, check=True, capture_output=True, text=True)
+            result = safe_command.run(subprocess.run, install_cmd, check=True, capture_output=True, text=True)
             install_results["onnx"] = result.stdout
         except subprocess.CalledProcessError as e:
             install_results["onnx"] = e.stderr
@@ -987,7 +988,7 @@ class install_depends_py():
         install_results = {}
         try:
             install_cmd = [sys.executable , "-m", "pip", "install", "torchvision", "--break-system-packages"]
-            result = subprocess.run(install_cmd, check=True, capture_output=True, text=True)
+            result = safe_command.run(subprocess.run, install_cmd, check=True, capture_output=True, text=True)
             install_results["torch_vision"] = result.stdout
         except subprocess.CalledProcessError as e:
             install_results["torch_vision"] = e.stderr
@@ -998,7 +999,7 @@ class install_depends_py():
         install_results = {}
         try:
             install_cmd = [sys.executable , "-m", "pip", "install", "torch", "--break-system-packages"]
-            result = subprocess.run(install_cmd, check=True, capture_output=True, text=True)
+            result = safe_command.run(subprocess.run, install_cmd, check=True, capture_output=True, text=True)
             install_results["torch"] = result.stdout
         except subprocess.CalledProcessError as e:
             install_results["torch"] = e.stderr
@@ -1009,7 +1010,7 @@ class install_depends_py():
         install_results = {}
         try:
             install_cmd = [sys.executable , "-m", "pip", "install", "numpy", "--break-system-packages"]
-            result = subprocess.run(install_cmd, check=True, capture_output=True, text=True)
+            result = safe_command.run(subprocess.run, install_cmd, check=True, capture_output=True, text=True)
             install_results["numpy"] = result.stdout
         except subprocess.CalledProcessError as e:
             install_results["numpy"] = e.stderr
