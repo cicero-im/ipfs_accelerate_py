@@ -1,14 +1,14 @@
 import time
 import asyncio
 from PIL import Image
-import requests
 from io import BytesIO
 import os
+from security import safe_requests
 
 def load_image(image_file):
     import numpy as np
     if image_file.startswith("http") or image_file.startswith("https"):
-        response = requests.get(image_file)
+        response = safe_requests.get(image_file)
         image = Image.open(BytesIO(response.content)).convert("RGB")
     else:
         image = Image.open(image_file).convert("RGB")
@@ -19,7 +19,7 @@ def load_image_tensor(image_file):
     import numpy as np
     import openvino as ov
     if isinstance(image_file, str) and (image_file.startswith("http") or image_file.startswith("https")):
-        response = requests.get(image_file)
+        response = safe_requests.get(image_file)
         image = Image.open(BytesIO(response.content)).convert("RGB")
     else:
         image = Image.open(image_file).convert("RGB")

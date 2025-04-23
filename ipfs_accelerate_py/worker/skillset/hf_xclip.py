@@ -6,6 +6,7 @@ import requests
 from io import BytesIO
 import os
 import tempfile
+from security import safe_requests
 
 def sample_frame_indices(clip_len, frame_sample_rate, seg_len):
     import numpy as np
@@ -19,7 +20,7 @@ def sample_frame_indices(clip_len, frame_sample_rate, seg_len):
 def load_image(image_file):
     import numpy as np
     if image_file.startswith("http") or image_file.startswith("https"):
-        response = requests.get(image_file)
+        response = safe_requests.get(image_file)
         image = Image.open(BytesIO(response.content)).convert("RGB")
     else:
         image = Image.open(image_file).convert("RGB")
@@ -30,7 +31,7 @@ def load_image_tensor(image_file):
     import numpy as np
     import openvino as ov
     if isinstance(image_file, str) and (image_file.startswith("http") or image_file.startswith("https")):
-        response = requests.get(image_file)
+        response = safe_requests.get(image_file)
         image = Image.open(BytesIO(response.content)).convert("RGB")
     else:
         image = Image.open(image_file).convert("RGB")
@@ -288,7 +289,7 @@ class hf_xclip:
                         videoreader = self.decord.VideoReader(y, num_threads=1, ctx=self.decord.cpu(0))
                     elif "http" in y:
                         with tempfile.NamedTemporaryFile(suffix=".mp4") as f:
-                            f.write(requests.get(y).content)
+                            f.write(safe_requests.get(y).content)
                             f.flush()
                             videoreader = self.decord.VideoReader(f.name, num_threads=1, ctx=self.decord.cpu(0))
                 if videoreader is not None:
