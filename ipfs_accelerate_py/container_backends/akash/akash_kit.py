@@ -49,10 +49,10 @@ class akash_kit:
         akash_version = subprocess.check_output('curl -s https://api.github.com/repos/akash-network/provider/releases/latest | jq -r ".tag_name"', shell=True).decode('utf-8').replace("\n", "")
         self.env["AKASH_VERSION"] = akash_version       
         #self.env["AKASH_CHAIN_ID"] = "$(curl -s " + self.env["AKASH_NET"] + "/chain-id.txt\")"
-        akash_chain_id = subprocess.check_output('curl -s ' + self.env["AKASH_NET"] + '/chain-id.txt', shell=True).decode('utf-8').replace("\n", "")
+        akash_chain_id = subprocess.check_output('curl -s ' + self.env["AKASH_NET"] + '/chain-id.txt', shell=False).decode('utf-8').replace("\n", "")
         self.env["AKASH_CHAIN_ID"] = akash_chain_id
         #self.env["AKASH_NODE"] = "$(curl -s " + self.env["AKASH_NET"] + "/rpc-nodes.txt\")"
-        akash_node = subprocess.check_output('curl -s ' + self.env["AKASH_NET"] + '/rpc-nodes.txt', shell=True).decode('utf-8').replace("\n", "")
+        akash_node = subprocess.check_output('curl -s ' + self.env["AKASH_NET"] + '/rpc-nodes.txt', shell=False).decode('utf-8').replace("\n", "")
         self.env["AKASH_NODE"] = akash_node
         self.env["AKASH_GAS"] = "auto"
         self.env["AKASH_GAS_ADJUSTMENT"] = "1.15"
@@ -104,17 +104,17 @@ class akash_kit:
             return True
     
     def set_akash_balance(self, **kwargs):
-        balance = subprocess.check_output('provider-services query bank balances --node ' + self.env["AKASH_NODE"] + " " + self.env["AKASH_ACCOUNT_ADDRESS"], shell=True, env=self.env).decode('utf-8')
+        balance = subprocess.check_output('provider-services query bank balances --node ' + self.env["AKASH_NODE"] + " " + self.env["AKASH_ACCOUNT_ADDRESS"], shell=False, env=self.env).decode('utf-8')
         return balance
     
     def get_akash_cert(self, **kwargs):
-        cert = subprocess.check_output('provider-services tx cert generate client --from ' + self.env["AKASH_KEY_NAME"] , shell=True, env=self.env).decode('utf-8')
+        cert = subprocess.check_output('provider-services tx cert generate client --from ' + self.env["AKASH_KEY_NAME"] , shell=False, env=self.env).decode('utf-8')
         self.env["AKASH_CERT"] = cert
         return cert
 
     def publish_akash_cert(self, **kwargs):
         try:
-            test = subprocess.check_output('provider-services tx publish client --from' + self.env["AKASH_KEY_NAME"], shell=True, env=self.env).decode('utf-8')
+            test = subprocess.check_output('provider-services tx publish client --from' + self.env["AKASH_KEY_NAME"], shell=False, env=self.env).decode('utf-8')
         except subprocess.CalledProcessError as e:
             print(e)
             raise e
@@ -123,7 +123,7 @@ class akash_kit:
 
     def add_akash_key(self, key, **kwargs):
         try:
-            test = subprocess.check_output('provider-services keys add ' + key, shell=True, env=self.env).decode('utf-8')
+            test = subprocess.check_output('provider-services keys add ' + key, shell=False, env=self.env).decode('utf-8')
         except subprocess.CalledProcessError as e:
             print(e)
             raise e
@@ -132,7 +132,7 @@ class akash_kit:
         
     def create_akash_deployment(self, deployment, **kwargs):
         try:
-            deployment = subprocess.check_output('provider-services tx deployment create ' + deployment ,+ ' --from ' +  self.env['AKASH_KEY_NAME'] , shell=True, env=self.env).decode('utf-8')
+            deployment = subprocess.check_output('provider-services tx deployment create ' + deployment ,+ ' --from ' +  self.env['AKASH_KEY_NAME'] , shell=False, env=self.env).decode('utf-8')
         except subprocess.CalledProcessError as e:
             print(e)
             raise e
@@ -141,7 +141,7 @@ class akash_kit:
 
     def view_akash_bids(self, **kwargs):
         try:
-            bids = subprocess.check_output('provider-services query market bid list --owner ' + self.env['AKASH_ACCOUNT_ADDRESS'] + ' --node ' + self.env["AKASH_NODE"] + ' --dseq ' + self.env["AKASH_DSEQ"]  + " --state=open" , shell=True, env=self.env).decode('utf-8')
+            bids = subprocess.check_output('provider-services query market bid list --owner ' + self.env['AKASH_ACCOUNT_ADDRESS'] + ' --node ' + self.env["AKASH_NODE"] + ' --dseq ' + self.env["AKASH_DSEQ"]  + " --state=open" , shell=False, env=self.env).decode('utf-8')
         except subprocess.CalledProcessError as e:
             print(e)
             raise e
@@ -154,7 +154,7 @@ class akash_kit:
 
     def create_akash_lease(self, **kwargs):
         try:
-            lease = subprocess.check_output('provider-services tx market lease create --dseq ' + self.env["AKASH_DSEQ"] + ' -- provider ' + self.env["akash_provider"] + '--from ' + self.env['AKASH_KEY_NAME'], shell=True, env=self.env).decode('utf-8')
+            lease = subprocess.check_output('provider-services tx market lease create --dseq ' + self.env["AKASH_DSEQ"] + ' -- provider ' + self.env["akash_provider"] + '--from ' + self.env['AKASH_KEY_NAME'], shell=False, env=self.env).decode('utf-8')
         except subprocess.CalledProcessError as e:
             print(e)
             raise e
@@ -163,7 +163,7 @@ class akash_kit:
         
     def view_akash_leases(self, **kwargs):
         try:
-            leases = subprocess.check_output('provider-services query market lease list --owner ' + self.env['AKASH_ACCOUNT_ADDRESS'] + ' --node ' + self.env["AKASH_NODE"] + ' --dseq ' + self.env["AKASH_DSEQ"] , shell=True, env=self.env).decode('utf-8')
+            leases = subprocess.check_output('provider-services query market lease list --owner ' + self.env['AKASH_ACCOUNT_ADDRESS'] + ' --node ' + self.env["AKASH_NODE"] + ' --dseq ' + self.env["AKASH_DSEQ"] , shell=False, env=self.env).decode('utf-8')
         except subprocess.CalledProcessError as e:
             print(e)
             raise e
@@ -172,7 +172,7 @@ class akash_kit:
 
     def close_akash_deployment(self, **kwargs):
         try:
-            close = subprocess.check_output('provider-services tx deployment close ' + self.env["AKASH_DSEQ"] + ' --from ' + self.env['AKASH_KEY_NAME'], shell=True, env=self.env).decode('utf-8')
+            close = subprocess.check_output('provider-services tx deployment close ' + self.env["AKASH_DSEQ"] + ' --from ' + self.env['AKASH_KEY_NAME'], shell=False, env=self.env).decode('utf-8')
         except subprocess.CalledProcessError as e:
             print(e)
             raise e
@@ -181,9 +181,9 @@ class akash_kit:
         
     def close_all_akash_deployments(self, **kwargs):
         try:
-            deployments = subprocess.check_output('provider-services query deployment list --owner ' + self.env['AKASH_ACCOUNT_ADDRESS'] + ' --node ' + self.env["AKASH_NODE"], shell=True, env=self.env).decode('utf-8')
+            deployments = subprocess.check_output('provider-services query deployment list --owner ' + self.env['AKASH_ACCOUNT_ADDRESS'] + ' --node ' + self.env["AKASH_NODE"], shell=False, env=self.env).decode('utf-8')
             for deployment in deployments:
-                close = subprocess.check_output('provider-services tx deployment close ' + deployment + ' --from ' + self.env['AKASH_KEY_NAME'], shell=True, env=self.env).decode('utf-8')
+                close = subprocess.check_output('provider-services tx deployment close ' + deployment + ' --from ' + self.env['AKASH_KEY_NAME'], shell=False, env=self.env).decode('utf-8')
         except subprocess.CalledProcessError as e:
             print(e)
             raise e
@@ -192,7 +192,7 @@ class akash_kit:
         
     def send_akash_manifest(self, manifest, **kwargs):
         try:
-            send = subprocess.check_output('provider-services send-manifest ' + manifest + ' --dseq ' + self.env["AKASH_DSEQ"] + ' --from ' + self.env['AKASH_KEY_NAME'] + '--provider ' + self.env["AKASH_PROVIDER"], shell=True, env=self.env).decode('utf-8')
+            send = subprocess.check_output('provider-services send-manifest ' + manifest + ' --dseq ' + self.env["AKASH_DSEQ"] + ' --from ' + self.env['AKASH_KEY_NAME'] + '--provider ' + self.env["AKASH_PROVIDER"], shell=False, env=self.env).decode('utf-8')
         except subprocess.CalledProcessError as e:
             print(e)
             raise e
@@ -201,7 +201,7 @@ class akash_kit:
         
     def view_akash_logs(self, **kwargs):
         try:
-            logs = subprocess.check_output('provider-services lease logs --dseq ' + self.env["AKASH_DSEQ"] + ' --from ' + self.env['AKASH_KEY_NAME'] + '--provider ' + self.env["AKASH_PROVIDER"], shell=True, env=self.env).decode('utf-8')
+            logs = subprocess.check_output('provider-services lease logs --dseq ' + self.env["AKASH_DSEQ"] + ' --from ' + self.env['AKASH_KEY_NAME'] + '--provider ' + self.env["AKASH_PROVIDER"], shell=False, env=self.env).decode('utf-8')
         except subprocess.CalledProcessError as e:
             print(e)
             raise e
@@ -210,14 +210,14 @@ class akash_kit:
         
     def update_akash_manifest(self, manifest, **kwargs):
         try:
-            update = subprocess.check_output('provider-services tx deployment update ' + manifest + ' --dseq ' + self.env["AKASH_DSEQ"] + ' --from ' + self.env['AKASH_KEY_NAME'], shell=True, env=self.env).decode('utf-8')
+            update = subprocess.check_output('provider-services tx deployment update ' + manifest + ' --dseq ' + self.env["AKASH_DSEQ"] + ' --from ' + self.env['AKASH_KEY_NAME'], shell=False, env=self.env).decode('utf-8')
         except subprocess.CalledProcessError as e:
             print(e)
             raise e
         finally:
             pass 
         try:
-            send_manifest = subprocess.check_output('provider-services send-manifest ' + manifest + ' --dseq ' + self.env["AKASH_DSEQ"] + ' --from ' + self.env['AKASH_KEY_NAME'] + '--provider ' + self.env["AKASH_PROVIDER"], shell=True, env=self.env).decode('utf-8')
+            send_manifest = subprocess.check_output('provider-services send-manifest ' + manifest + ' --dseq ' + self.env["AKASH_DSEQ"] + ' --from ' + self.env['AKASH_KEY_NAME'] + '--provider ' + self.env["AKASH_PROVIDER"], shell=False, env=self.env).decode('utf-8')
         except subprocess.CalledProcessError as e:
             print(e)
             raise e

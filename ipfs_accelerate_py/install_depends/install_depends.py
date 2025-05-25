@@ -205,7 +205,7 @@ class install_depends_py():
     async def test_torch_vision(self):
         test_torch_vision_cmd = [sys.executable, "-c", "import torchvision; print(torchvision.__version__)"]
         try:
-            test_torch_vision = subprocess.check_output(test_torch_vision_cmd, shell=True).decode("utf-8")
+            test_torch_vision = subprocess.check_output(test_torch_vision_cmd, shell=False).decode("utf-8")
             if type(test_torch_vision) == str and type(test_torch_vision) != ValueError:
                 return True
             else:
@@ -218,7 +218,7 @@ class install_depends_py():
     async def test_torch(self):
         test_torch_cmd = [sys.executable, "-c", "import torch; print(torch.__version__)"]
         try:
-            test_torch = subprocess.check_output(test_torch_cmd, shell=True).decode("utf-8")
+            test_torch = subprocess.check_output(test_torch_cmd, shell=False).decode("utf-8")
             if type(test_torch) == str and type(test_torch) != ValueError:
                 return True
             else:
@@ -253,7 +253,7 @@ class install_depends_py():
     async def test_ollama(self):
         test_ollama_cmd = "ollama -v"
         try:
-            test_ollama = subprocess.check_output(test_ollama_cmd, shell=True).decode("utf-8")
+            test_ollama = subprocess.check_output(test_ollama_cmd, shell=False).decode("utf-8")
             if type(test_ollama) == str and type(test_ollama) != ValueError:
                 return True
             else:
@@ -266,7 +266,7 @@ class install_depends_py():
     async def test_openvino(self):
         test_openvino_cmd = [sys.executable, "-c", "import openvino; print(openvino.__version__)"]
         try:
-            test_openvino = subprocess.check_output(test_openvino_cmd, shell=True).decode("utf-8")              
+            test_openvino = subprocess.check_output(test_openvino_cmd, shell=False).decode("utf-8")              
             if type(test_openvino) == str and type(test_openvino) != ValueError:
                 return True
             else:
@@ -291,7 +291,7 @@ class install_depends_py():
     async def test_huggingface_optimum_onnx(self):
         test_optimum_onnx_cmd = [sys.executable, "-c", "import transformers; print(transformers.__version__)"]
         try:
-            test_optimum_onnx = subprocess.check_output(test_optimum_onnx_cmd, shell=True).decode("utf-8")
+            test_optimum_onnx = subprocess.check_output(test_optimum_onnx_cmd, shell=False).decode("utf-8")
             if type(test_optimum_onnx) == str and type(test_optimum_onnx) != ValueError:
                 return True
             else:
@@ -305,7 +305,7 @@ class install_depends_py():
         test_llama_cpp_cmd = [sys.executable, "-m", "pip", "show", "llama-cpp-python"]
         test_results = {}
         try:
-            test_llama_cpp = subprocess.check_output(test_llama_cpp_cmd, shell=True)
+            test_llama_cpp = subprocess.check_output(test_llama_cpp_cmd, shell=False)
             test_llama_cpp = test_llama_cpp.decode("utf-8")
             test_results["llama_cpp"] = test_llama_cpp
         except Exception as e:
@@ -327,7 +327,7 @@ class install_depends_py():
     async def test_local_openvino(self):
         test_openvino_cmd = [sys.executable, "-c", "import openvino; print(openvino.__version__)"]
         try:
-            test_openvino = subprocess.check_output(test_openvino_cmd, shell=True).decode("utf-8")              
+            test_openvino = subprocess.check_output(test_openvino_cmd, shell=False).decode("utf-8")              
             if type(test_openvino) == str and type(test_openvino) != ValueError:
                 return True
             else:
@@ -351,7 +351,7 @@ class install_depends_py():
     async def test_huggingface_optimum(self):
         test_optimum_cmd = [sys.executable, "-c", "import transformers; print(transformers.__version__)"]
         try:
-            test_optimum = subprocess.check_output(test_optimum_cmd, shell=True).decode("utf-8")
+            test_optimum = subprocess.check_output(test_optimum_cmd, shell=False).decode("utf-8")
             if type(test_optimum) == str and type(test_optimum) != ValueError:
                 return True
             else:
@@ -365,7 +365,7 @@ class install_depends_py():
         import optimum
         test_optimum_amx_cmd = [sys.executable, "-c", "import transformers; print(transformers.__version__)"]
         try:
-            test_optimum_amx = subprocess.check_output(test_optimum_amx_cmd, shell=True).decode("utf-8")
+            test_optimum_amx = subprocess.check_output(test_optimum_amx_cmd, shell=False).decode("utf-8")
             if type(test_optimum_amx) == str and type(test_optimum_amx) != ValueError:
                 return True
             else:
@@ -378,7 +378,7 @@ class install_depends_py():
     async def test_huggingface_optimum_habana(self):
         test_optimum_habana_cmd = [sys.executable, "-c", "import transformers; print(transformers.__version__)"]
         try:
-            test_optimum_habana = subprocess.check_output(test_optimum_habana_cmd, shell=True).decode("utf-8")
+            test_optimum_habana = subprocess.check_output(test_optimum_habana_cmd, shell=False).decode("utf-8")
             if type(test_optimum_habana) == str and type(test_optimum_habana) != ValueError:
                 return True
             else:
@@ -391,7 +391,7 @@ class install_depends_py():
     async def test_huggingface_optimum_neural_compressor(self):
         test_optimum_neural_compressor_cmd = [sys.executable, "-c", "import transformers; print(transformers.__version__)"]
         try:
-            test_optimum_neural_compressor = subprocess.check_output(test_optimum_neural_compressor_cmd, shell=True).decode("utf-8")
+            test_optimum_neural_compressor = subprocess.check_output(test_optimum_neural_compressor_cmd, shell=False).decode("utf-8")
             if type(test_optimum_neural_compressor) == str and type(test_optimum_neural_compressor) != ValueError:
                 return True
             else:
@@ -404,7 +404,7 @@ class install_depends_py():
     async def test_huggingface_optimum_openvino(self):
         test_optimum_openvino_cmd  = [sys.executable, "-c", "import transformers; print(transformers.__version__)"]
         try:
-            test_optimum_openvino = subprocess.check_output(test_optimum_openvino_cmd, shell=True).decode("utf-8")
+            test_optimum_openvino = subprocess.check_output(test_optimum_openvino_cmd, shell=False).decode("utf-8")
             if type(test_optimum_openvino) == str and type(test_optimum_openvino) != ValueError:
                 return True
             else:
@@ -418,7 +418,7 @@ class install_depends_py():
     async def test_huggingface_optimum_ipex(self):
         test_optimum_intel_cmd = [sys.executable, "-c", "import transformers; print(transformers.__version__)"]
         try:
-            test_optimum_intel = subprocess.check_output(test_optimum_intel_cmd, shell=True).decode("utf-8")
+            test_optimum_intel = subprocess.check_output(test_optimum_intel_cmd, shell=False).decode("utf-8")
             if type(test_optimum_intel) == str and type(test_optimum_intel) != ValueError:
                 return True
             else:
@@ -443,7 +443,7 @@ class install_depends_py():
     async def test_onnx(self):
         test_onnx_cmd = [sys.executable, "-c", "import onnx; print(onnx.__version__)"]
         try:
-            test_onnx = subprocess.check_output(test_onnx_cmd, shell=True).decode("utf-8")
+            test_onnx = subprocess.check_output(test_onnx_cmd, shell=False).decode("utf-8")
             if type(test_onnx) == str and type(test_onnx) != ValueError:
                 return True
             else:
@@ -824,18 +824,18 @@ class install_depends_py():
         try:
             result = { }
             if not os.path.exists("torch-ccl"):
-                result["clone"] = subprocess.check_output(commands[0], shell=True, text=True)
+                result["clone"] = subprocess.check_output(commands[0], shell=False, text=True)
                 os.chdir("torch-ccl")
-                result["sync"] = subprocess.check_output(commands[1], shell=True, text=True)
-                result["update"] = subprocess.check_output(commands[2], shell=True, text=True)
+                result["sync"] = subprocess.check_output(commands[1], shell=False, text=True)
+                result["update"] = subprocess.check_output(commands[2], shell=False, text=True)
             else:
                 os.chdir("torch-ccl")
                 try:
-                    result["sync"] = subprocess.check_output(commands[1], shell=True, text=True)
+                    result["sync"] = subprocess.check_output(commands[1], shell=False, text=True)
                 except subprocess.CalledProcessError as e:
                     result["sync"] = e.stderr
                 try:
-                    result["update"] = subprocess.check_output(commands[2], shell=True, text=True)
+                    result["update"] = subprocess.check_output(commands[2], shell=False, text=True)
                 except subprocess.CalledProcessError as e:
                     result["update"] = e.stderr
                 install_results["commands1"] = result
@@ -860,7 +860,7 @@ class install_depends_py():
         for command in commands2:
             command_index =  commands2.index(command) 
             try:
-                result = subprocess.check_output(command, shell=True, text=True)
+                result = subprocess.check_output(command, shell=False, text=True)
                 result[str(command_index)] = result
             except subprocess.CalledProcessError as e:
                 result[str(command_index)] = e
@@ -1019,7 +1019,7 @@ class install_depends_py():
     async def test_numpy(self):
         test_numpy_cmd = [sys.executable, "-c", "import numpy; print(numpy.__version__)"]
         try:
-            test_numpy = subprocess.check_output(test_numpy_cmd, shell=True).decode("utf-8")
+            test_numpy = subprocess.check_output(test_numpy_cmd, shell=False).decode("utf-8")
             if type(test_numpy) == str and type(test_numpy) != ValueError:
                 return True
             else:

@@ -489,7 +489,7 @@ class openvino_utils:
         parsed_cmd = ' '.join(command)
         # Execute the command
         try:
-            convert_model = subprocess.check_output(parsed_cmd, shell=True)
+            convert_model = subprocess.check_output(parsed_cmd, shell=False)
             convert_model = convert_model.decode('utf-8')
         except Exception as e:
             print(e)
