@@ -4,7 +4,7 @@ import yaml
 class chat_format:
 	def __init__(self, resources, meta=None):
 		with open(os.path.join(os.path.dirname(__file__), 'templates.yml')) as f:
-			self.templates = yaml.load(f, Loader=yaml.Loader)
+			self.templates = yaml.load(f, Loader=yaml.SafeLoader)
 
 	def format_chat_prompt(self, template, messages):
 		templates = self.templates
