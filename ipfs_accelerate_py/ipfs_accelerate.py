@@ -4,12 +4,12 @@ import json
 import os
 import sys
 import asyncio
-import random
 import ipfs_kit_py
 import ipfs_model_manager_py
 import libp2p_kit_py
 import hashlib
 import time
+import secrets
 
 class ipfs_accelerate_py:
     def __init__(self, resources=None, metadata=None):
@@ -988,11 +988,11 @@ class ipfs_accelerate_py:
             else:
                 this_endpoint = None
                 if len(list(filtered_local_endpoints.keys())) > 0:
-                    this_endpoint = random.choice(list(filtered_local_endpoints.keys()))
+                    this_endpoint = secrets.choice(list(filtered_local_endpoints.keys()))
                 if len(list(filtered_api_endpoints.keys())) > 0:
-                    this_endpoint = random.choice(list(filtered_api_endpoints.keys()))
+                    this_endpoint = secrets.choice(list(filtered_api_endpoints.keys()))
                 elif len(list(filtered_libp2p_endpoints.keys())) > 0:
-                    this_endpoint = random.choice(list(filtered_libp2p_endpoints.keys()))
+                    this_endpoint = secrets.choice(list(filtered_libp2p_endpoints.keys()))
                 print("chosen endpoint for " + model + " is " + this_endpoint)
                 return this_endpoint
 
@@ -1013,7 +1013,7 @@ class ipfs_accelerate_py:
             else:
                 this_endpoint = None
                 combined_endpoints = filtered_api_endpoints + filtered_libp2p_endpoints + filtered_local_endpoints
-                random_endpoint = random.choice(combined_endpoints)
+                random_endpoint = secrets.choice(combined_endpoints)
                 random_endpoint_model = random_endpoint[0]
                 random_endpoint_type = random_endpoint[1]
                 random_endpoint_handler = self.resources["endpoint_handler"][random_endpoint_model][random_endpoint_type]
