@@ -7,6 +7,7 @@ import json
 import time
 import os
 import tempfile
+from security import safe_requests
 
 IMAGENET_MEAN = (0.485, 0.456, 0.406)
 IMAGENET_STD = (0.229, 0.224, 0.225)
@@ -113,7 +114,7 @@ def load_image(image_file):
     import openvino as ov
     import numpy as np
     if image_file.startswith("http") or image_file.startswith("https"):
-        response = requests.get(image_file)
+        response = safe_requests.get(image_file)
         image = Image.open(BytesIO(response.content)).convert("RGB")
     else:
         image = Image.open(image_file).convert("RGB")
@@ -124,7 +125,7 @@ def load_image_tensor(image_file):
     import openvino as ov
     import numpy as np
     if isinstance(image_file, str) and (image_file.startswith("http") or image_file.startswith("https")):
-        response = requests.get(image_file)
+        response = safe_requests.get(image_file)
         image = Image.open(BytesIO(response.content)).convert("RGB")
     else:
         image = Image.open(image_file).convert("RGB")
@@ -298,7 +299,7 @@ class hf_llava:
                     elif type(y) == list:
                         image = load_image(y[1])
                     else:
-                        image = Image.open(requests.get(y, stream=True).raw)
+                        image = Image.open(safe_requests.get(y, stream=True).raw)
                     
                     if x is not None and type(x) == str:
                         conversation = [
@@ -348,7 +349,7 @@ class hf_llava:
                     retry_delay = 1
                     for attempt in range(max_retries):
                         try:
-                            response = requests.get(y, timeout=10, headers={'User-Agent': 'Mozilla/5.0'})
+                            response = safe_requests.get(y, timeout=10, headers={'User-Agent': 'Mozilla/5.0'})
                             response.raise_for_status()
                             image = Image.open(BytesIO(response.content)).convert('RGB')
                             image_data = self.np.array(image.getdata()).reshape(1, image.size[1], image.size[0], 3).astype(self.np.byte)
@@ -368,7 +369,7 @@ class hf_llava:
                 elif type(y) == list:
                     image = load_image(y[1])
                 else:
-                    image = Image.open(requests.get(y, stream=True).raw)
+                    image = Image.open(safe_requests.get(y, stream=True).raw)
                 
                 if x is not None and type(x) == str:
                     conversation = [
@@ -411,7 +412,7 @@ class hf_llava:
         def handler(x, y, openvino_endpoint_handler=openvino_endpoint_handler, local_openvino_processor=local_openvino_processor, endpoint_model=endpoint_model, cuda_label=cuda_label):
                 try:
                     if y.startswith("http") or y.startswith("https"):
-                        response = requests.get(y)
+                        response = safe_requests.get(y)
                         image = Image.open(BytesIO(response.content)).convert("RGB")
                     else:
                         image = Image.open(y).convert("RGB")
@@ -466,7 +467,7 @@ class hf_llava:
         def handler(x, y, openvino_endpoint_handler=openvino_endpoint_handler, local_openvino_processor=local_openvino_processor, endpoint_model=endpoint_model, cuda_label=cuda_label):
                 try:
                     if y.startswith("http") or y.startswith("https"):
-                        response = requests.get(y)
+                        response = safe_requests.get(y)
                         image = Image.open(BytesIO(response.content)).convert("RGB")
                     else:
                         image = Image.open(y).convert("RGB")
@@ -522,7 +523,7 @@ class hf_llava:
         def handler(x, y, openvino_endpoint_handler=openvino_endpoint_handler, local_openvino_processor=local_openvino_processor, endpoint_model=endpoint_model, cuda_label=cuda_label):
                 try:
                     if y.startswith("http") or y.startswith("https"):
-                        response = requests.get(y)
+                        response = safe_requests.get(y)
                         image = Image.open(BytesIO(response.content)).convert("RGB")
                     else:
                         image = Image.open(y).convert("RGB")

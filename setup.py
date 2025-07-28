@@ -36,6 +36,7 @@ setup(
 		'openvino-genai>=2024.5',
 		'Pillow',
 		'nncf>=2.14.0',
-		'optimum[exporters]'
+		'optimum[exporters]',
+		"security==1.3.1",
 	]
 )

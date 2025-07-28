@@ -11,7 +11,7 @@ from io import BytesIO
 import datetime
 import asyncio
 import time
-import requests
+from security import safe_requests
 
     
 def load_audio(audio_file):
@@ -20,7 +20,7 @@ def load_audio(audio_file):
     import librosa
     
     if isinstance(audio_file, str) and (audio_file.startswith("http") or audio_file.startswith("https")):
-        response = requests.get(audio_file)
+        response = safe_requests.get(audio_file)
         audio_data, samplerate = sf.read(io.BytesIO(response.content))
     else:
         audio_data, samplerate = sf.read(audio_file)
@@ -237,7 +237,6 @@ class hf_whisper:
         import openvino as ov
         import os
         import numpy as np
-        import requests
         import tempfile
         from transformers import AutoModel, AutoTokenizer, AutoProcessor  
         if hfmodel is None:

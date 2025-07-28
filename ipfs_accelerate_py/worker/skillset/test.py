@@ -1,10 +1,10 @@
-import requests
 from PIL import Image
 from io import BytesIO
 import shutil
 import nncf
 import openvino as ov
 import gc
+from security import safe_requests
 
 core = ov.Core()
 
@@ -25,7 +25,7 @@ ov_model = OVModelForVisualCausalLM.from_pretrained(model_path, device=device)
 
 def load_image(image_file):
     if image_file.startswith("http") or image_file.startswith("https"):
-        response = requests.get(image_file)
+        response = safe_requests.get(image_file)
         image = Image.open(BytesIO(response.content)).convert("RGB")
     else:
         image = Image.open(image_file).convert("RGB")
