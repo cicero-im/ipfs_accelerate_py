@@ -20,7 +20,7 @@ def load_audio(audio_file):
     import librosa
     
     if isinstance(audio_file, str) and (audio_file.startswith("http") or audio_file.startswith("https")):
-        response = requests.get(audio_file)
+        response = requests.get(audio_file, timeout=60)
         audio_data, samplerate = sf.read(io.BytesIO(response.content))
     else:
         audio_data, samplerate = sf.read(audio_file)

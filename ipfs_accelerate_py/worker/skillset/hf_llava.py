@@ -113,7 +113,7 @@ def load_image(image_file):
     import openvino as ov
     import numpy as np
     if image_file.startswith("http") or image_file.startswith("https"):
-        response = requests.get(image_file)
+        response = requests.get(image_file, timeout=60)
         image = Image.open(BytesIO(response.content)).convert("RGB")
     else:
         image = Image.open(image_file).convert("RGB")
@@ -124,7 +124,7 @@ def load_image_tensor(image_file):
     import openvino as ov
     import numpy as np
     if isinstance(image_file, str) and (image_file.startswith("http") or image_file.startswith("https")):
-        response = requests.get(image_file)
+        response = requests.get(image_file, timeout=60)
         image = Image.open(BytesIO(response.content)).convert("RGB")
     else:
         image = Image.open(image_file).convert("RGB")
@@ -298,7 +298,7 @@ class hf_llava:
                     elif type(y) == list:
                         image = load_image(y[1])
                     else:
-                        image = Image.open(requests.get(y, stream=True).raw)
+                        image = Image.open(requests.get(y, stream=True, timeout=60).raw)
                     
                     if x is not None and type(x) == str:
                         conversation = [
@@ -368,7 +368,7 @@ class hf_llava:
                 elif type(y) == list:
                     image = load_image(y[1])
                 else:
-                    image = Image.open(requests.get(y, stream=True).raw)
+                    image = Image.open(requests.get(y, stream=True, timeout=60).raw)
                 
                 if x is not None and type(x) == str:
                     conversation = [
@@ -411,7 +411,7 @@ class hf_llava:
         def handler(x, y, openvino_endpoint_handler=openvino_endpoint_handler, local_openvino_processor=local_openvino_processor, endpoint_model=endpoint_model, cuda_label=cuda_label):
                 try:
                     if y.startswith("http") or y.startswith("https"):
-                        response = requests.get(y)
+                        response = requests.get(y, timeout=60)
                         image = Image.open(BytesIO(response.content)).convert("RGB")
                     else:
                         image = Image.open(y).convert("RGB")
@@ -466,7 +466,7 @@ class hf_llava:
         def handler(x, y, openvino_endpoint_handler=openvino_endpoint_handler, local_openvino_processor=local_openvino_processor, endpoint_model=endpoint_model, cuda_label=cuda_label):
                 try:
                     if y.startswith("http") or y.startswith("https"):
-                        response = requests.get(y)
+                        response = requests.get(y, timeout=60)
                         image = Image.open(BytesIO(response.content)).convert("RGB")
                     else:
                         image = Image.open(y).convert("RGB")
@@ -522,7 +522,7 @@ class hf_llava:
         def handler(x, y, openvino_endpoint_handler=openvino_endpoint_handler, local_openvino_processor=local_openvino_processor, endpoint_model=endpoint_model, cuda_label=cuda_label):
                 try:
                     if y.startswith("http") or y.startswith("https"):
-                        response = requests.get(y)
+                        response = requests.get(y, timeout=60)
                         image = Image.open(BytesIO(response.content)).convert("RGB")
                     else:
                         image = Image.open(y).convert("RGB")
